@@ -1,2 +1,6 @@
-package Games;public interface Players {
+package Games;
+
+public interface Players {
+
+
 }

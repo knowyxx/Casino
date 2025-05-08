@@ -1,2 +1,21 @@
-package Commands;public class Exit {
+package Commands;
+
+import Players.User;
+
+public class Exit implements Commands {
+
+    @Override
+    public void setUser(User user) {
+
+    }
+
+    @Override
+    public boolean exit() {
+        return true;
+    }
+
+    @Override
+    public void excecute() {
+
+    }
 }

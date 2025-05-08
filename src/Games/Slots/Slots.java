@@ -1,2 +1,4 @@
-package Games.Slots;public class Slots {
+package Games.Slots;
+
+public class Slots {
 }
