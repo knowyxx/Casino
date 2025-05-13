@@ -74,7 +74,16 @@ public class Play implements Commands {
                     break;
 
                 case 2:
-                    correct = true;
+                    while(!correct){
+                        System.out.println("How many bots would you like to play? ");
+                        try {
+                            answer = sc.nextInt();
+                        } catch (Exception e) {
+                            System.out.println("Please enter a valid number.");
+                        }
+                    }
+                    poker.pokerGame(user, answer);
+                    break;
                 case 3:
                     while(!correct){
                         System.out.println("How much would you like to bet? (must be divisible by 5)");

@@ -12,7 +12,10 @@ public class User {
     private Drinks drinks;
     private int age;
     private ArrayList<Cards> cards;
-    private boolean BustBlackjack = false;
+    private boolean bustBlackjack;
+    private boolean foldPoker;
+    private boolean matchingHighestBetPoker;
+
 
     public boolean loadUser(){
         Scanner sc = new Scanner(System.in);
@@ -66,10 +69,26 @@ public class User {
     }
 
     public boolean isBustBlackjack() {
-        return BustBlackjack;
+        return bustBlackjack;
     }
 
     public void setBustBlackjack(boolean bustBlackjack) {
-        BustBlackjack = bustBlackjack;
+        this.bustBlackjack = bustBlackjack;
+    }
+
+    public boolean isFoldPoker() {
+        return foldPoker;
+    }
+
+    public void setFoldPoker(boolean foldPoker) {
+        this.foldPoker = foldPoker;
+    }
+
+    public boolean isMatchingHighestBetPoker() {
+        return matchingHighestBetPoker;
+    }
+
+    public void setMatchingHighestBetPoker(boolean matchingHighestBetPoker) {
+        this.matchingHighestBetPoker = matchingHighestBetPoker;
     }
 }

@@ -6,8 +6,12 @@ import java.util.ArrayList;
 
 public class Bot {
     private ArrayList<Cards> cards;
-    private boolean stayBlackjack = false;
-    private boolean bustBlackjack = false;
+    private boolean stayBlackjack;
+    private boolean bustBlackjack;
+    private boolean foldPoker;
+    private boolean matchingHighestBetPoker;
+    private int bet = 0;
+    private int combinationValuePoker = 0;
 
 
     public Bot() {
@@ -40,5 +44,37 @@ public class Bot {
 
     public void setBustBlackjack(boolean bustBlackjack) {
         this.bustBlackjack = bustBlackjack;
+    }
+
+    public boolean isMatchingHighestBetPoker() {
+        return matchingHighestBetPoker;
+    }
+
+    public void setMatchingHighestBetPoker(boolean matchingHighestBetPoker) {
+        this.matchingHighestBetPoker = matchingHighestBetPoker;
+    }
+
+    public boolean isFoldPoker() {
+        return foldPoker;
+    }
+
+    public void setFoldPoker(boolean foldPoker) {
+        this.foldPoker = foldPoker;
+    }
+
+    public int getBet() {
+        return bet;
+    }
+
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+
+    public int getCombinationValuePoker() {
+        return combinationValuePoker;
+    }
+
+    public void setCombinationValuePoker(int combinationValuePoker) {
+        this.combinationValuePoker = combinationValuePoker;
     }
 }

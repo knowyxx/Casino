@@ -7,6 +7,7 @@ import Players.Bot;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Blackjack implements Players {
 
@@ -22,6 +23,7 @@ public class Blackjack implements Players {
     private int luck;
     private boolean stay = false;
     private boolean correct = false;
+    private Scanner sc = new Scanner(System.in);
 
     public void blackjackGame(User user, int bet, int numberOfBots) {
         //Loading cards into the deck of the user.
@@ -70,6 +72,12 @@ public class Blackjack implements Players {
                         1) hit
                         2) stay""");
                 while (!correct) {
+                    try {
+                        choice = sc.nextInt();
+
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     switch (choice) {
                         case 1: // HIT
                             correct = true;
