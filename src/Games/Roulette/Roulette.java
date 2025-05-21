@@ -1,10 +1,8 @@
 package Games.Roulette;
 
-import Cards.Cards;
 import Players.User;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +17,6 @@ public class Roulette {
     private String range;
     private ArrayList<Roulette> rouletteArrayList = new ArrayList<>();
     private int answerInt = 0;
-    private String answerStr = "";
-    private int luck = 0;
 
     public Roulette() {
     }
@@ -32,7 +28,8 @@ public class Roulette {
         this.range = range;
     }
 
-    public boolean loadRoulette() {
+    public void loadRoulette() {
+        rouletteArrayList.clear();
         try (BufferedReader br = new BufferedReader(new FileReader("Roulette.csv"))) {
             String line;
             br.readLine();
@@ -46,17 +43,17 @@ public class Roulette {
                 );
                 rouletteArrayList.add(roulette1);
             }
-            return true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void rouletteGame(User user, int bet){
+        loadRoulette();
         Scanner sc = new Scanner(System.in);
         Random rand = new Random();
         boolean correct = false;
-        int random = 0;
+        int random;
         System.out.println("""
                 On what do you want to bet?
                 1) number (0-36)
@@ -74,6 +71,8 @@ public class Roulette {
         }
         correct = false;
 
+        String answerStr;
+        int luck;
         switch (answerInt){
             case 1:
                 System.out.println("What number would you like to bet on?");
@@ -103,6 +102,7 @@ public class Roulette {
                         System.out.println("Please pick a valid number.");
                     }
                 }
+                break;
             case 2:
                 System.out.println("What color would you like to bet on?");
                 while (!correct){
@@ -139,6 +139,7 @@ public class Roulette {
                         throw new RuntimeException(e);
                     }
                 }
+                break;
             case 3:
                 System.out.println("What parity would you like to bet on?");
                 while (!correct){
@@ -154,7 +155,7 @@ public class Roulette {
 
                             luck = rand.nextInt(100) + 1;
                             if (luck <= user.getLuck()){
-                                System.out.println("You picked the right parity, you won!  Your luck = " + user.getLuck());
+                                System.out.println("You picked the right parity, you won!");
                                 user.winnings(bet*37);
                             }
                             if (answerStr.equalsIgnoreCase(rouletteArrayList.get(rand.nextInt(rouletteArrayList.size())).getParity())){
@@ -173,6 +174,7 @@ public class Roulette {
                         throw new RuntimeException(e);
                     }
                 }
+                break;
             case 4:
                 System.out.println("What range would you like to bet on?");
                 while (!correct){
@@ -207,6 +209,9 @@ public class Roulette {
                         throw new RuntimeException(e);
                     }
                 }
+            default:
+                System.out.println("Please pick a valid number.");
+                break;
         }
     }
 

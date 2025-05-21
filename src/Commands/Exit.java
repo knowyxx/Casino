@@ -15,7 +15,7 @@ public class Exit implements Commands {
     }
 
     @Override
-    public void excecute() {
-
+    public String excecute() {
+        return "Alrite brudda";
     }
 }

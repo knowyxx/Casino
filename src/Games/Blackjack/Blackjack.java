@@ -13,17 +13,14 @@ public class Blackjack implements Players {
 
     private final Cards cards = new Cards();
     private final Random rand = new Random();
-    private Bot dealer = new Bot();
-    private Bot bot1 = new Bot();
-    private Bot bot2 = new Bot();
-    private Bot bot3 = new Bot();
-    private Bot bot4 = new Bot();
+    private final Bot dealer = new Bot();
+    private final ArrayList<Bot> bots = new ArrayList<Bot>();
     private boolean endOfGame = false;
-    private int choice = 0;
-    private int luck;
     private boolean stay = false;
     private boolean correct = false;
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
+    private boolean userBustBlackjack;
+
 
     public void blackjackGame(User user, int bet, int numberOfBots) {
         //Loading cards into the deck of the user.
@@ -37,22 +34,12 @@ public class Blackjack implements Players {
         }
 
         //Loading cards into the deck of chosen amount of bots.
-        if (numberOfBots >= 1) {
-            bot1.getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
+        for (int i = 0; i < numberOfBots; i++) {
+            bots.add(new Bot());
+            for (int j = 0; j < 2; j++) {
+                bots.get(i).getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
+            }
         }
-
-        if (numberOfBots >= 2) {
-            bot2.getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
-        }
-
-        if (numberOfBots >= 3) {
-            bot3.getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
-        }
-
-        if (numberOfBots == 4) {
-            bot4.getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
-        }
-
         //Showing the dealers deck except the second one which is hidden.
         System.out.println("Dealers cards: " + dealer.getCards().get(0).getFace() + " "
                 + dealer.getCards().get(0).getSuit() + " "
@@ -72,6 +59,7 @@ public class Blackjack implements Players {
                         1) hit
                         2) stay""");
                 while (!correct) {
+                    int choice = 0;
                     try {
                         choice = sc.nextInt();
 
@@ -82,7 +70,7 @@ public class Blackjack implements Players {
                         case 1: // HIT
                             correct = true;
                             if (user.getLuck() == 0) {
-                                luck = rand.nextInt(100) + 1;
+                                int luck = rand.nextInt(100) + 1;
                                 if (luck <= user.getLuck()) {
                                     user.getCards().add(cards.getCards().get(rand.nextInt(20)));
                                 } else {
@@ -111,62 +99,19 @@ public class Blackjack implements Players {
 
 
             //First the bots either hit or stay and then write out the deck of the bots and check if they have busted.
-            if (numberOfBots >= 1) {
-                botBlackjackGame(bot1);
-                if (checkIfBotBusted(bot1)){
-                    System.out.println("Bot1 busted");
+            for (int i = 0; i < bots.size(); i++) {
+                botBlackjackGame(bots.get(i));
+                if (checkIfBotBusted(bots.get(i))){
+                    System.out.println("Bot" + i + " busted!");
                     totalStay++;
                 }else {
-                    System.out.println("Bot1 cards: ");
-                    writeDeck(bot1.getCards());
+                    System.out.println("Bot" + i + " cards: ");
+                    writeDeck(bots.get(i).getCards());
                 }
-                if (bot1.isStayBlackjack()){
+                if (bots.get(i).isStayBlackjack()){
                     totalStay++;
                 }
             }
-
-            if (numberOfBots >= 2) {
-                botBlackjackGame(bot2);
-                if (checkIfBotBusted(bot2)){
-                    System.out.println("Bot2 busted");
-                    totalStay++;
-                }else {
-                    System.out.println("Bot2 cards: ");
-                    writeDeck(bot2.getCards());
-                }
-                if (bot2.isStayBlackjack()){
-                    totalStay++;
-                }
-            }
-
-            if (numberOfBots >= 3) {
-                botBlackjackGame(bot3);
-                if (checkIfBotBusted(bot3)){
-                    System.out.println("Bot3 busted");
-                    totalStay++;
-                }else {
-                    System.out.println("Bot3 cards: ");
-                    writeDeck(bot3.getCards());
-                }
-                if (bot3.isStayBlackjack()){
-                    totalStay++;
-                }
-            }
-
-            if (numberOfBots >= 4) {
-                botBlackjackGame(bot4);
-                if (checkIfBotBusted(bot4)){
-                    System.out.println("Bot4 busted");
-                    totalStay++;
-                }else {
-                    System.out.println("Bot4 cards: ");
-                    writeDeck(bot4.getCards());
-                }
-                if (bot4.isStayBlackjack()){
-                    totalStay++;
-                }
-            }
-
 
             //If the user and every bot stays and or busts, then the dealer starts drawing cards.
             if (totalStay == numberOfBots+1){
@@ -246,7 +191,7 @@ public class Blackjack implements Players {
         return totalValue > 21;
     }
 
-    //Check if bots deck value is over 21.
+    //Check if bots' deck value is over 21.
     private boolean checkIfBotBusted(Bot bot){
         int totalValue = 0;
         for (int i = 0; i < bot.getCards().size(); i++) {

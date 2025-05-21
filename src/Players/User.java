@@ -7,32 +7,51 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class User {
-    private double money = 200;
+    private int money = 200;
     private double luck = 1;
     private Drinks drinks;
-    private int age;
+    //private String age = "18";
+    private String age;
     private ArrayList<Cards> cards;
-    private boolean bustBlackjack;
-    private boolean foldPoker;
-    private boolean matchingHighestBetPoker;
 
 
-    public boolean loadUser(){
+    public void loadUser(){
         Scanner sc = new Scanner(System.in);
+        cards = new ArrayList<Cards>();
         System.out.println("How old are you?");
-        setAge(sc.nextInt());
-        return true;
+        boolean correct = false;
+        while(!correct){
+            try {
+                setAge(sc.next());
+                if (Integer.parseInt(age) < 100 && Integer.parseInt(age) > 0){
+                    correct = true;
+
+                }else {
+                    System.out.println("Invalid age.");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid age.");
+            }
+        }
+    }
+
+    public void drinkDrink(int drinkLuck){
+        if (drinks != null){
+            setLuck(1 + drinkLuck);
+        }
     }
 
     public void winnings(double bet){
-        money = money + bet;
+        double throwaway = 0;
+        throwaway = money + bet;
+        money = (int) Math.round(throwaway);
     }
 
-    public double getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 
@@ -45,6 +64,7 @@ public class User {
     }
 
     public Drinks getDrinks() {
+
         return drinks;
     }
 
@@ -52,43 +72,20 @@ public class User {
         this.drinks = drinks;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAge(String age) {
+        if (age.matches("\\d{1,2}")){
+            this.age = age;
+        }else {
+            throw new IllegalArgumentException("Age is not valid");
+        }
+
     }
 
     public ArrayList<Cards> getCards() {
         return cards;
-    }
-
-    public void setCards(ArrayList<Cards> cards) {
-        this.cards = cards;
-    }
-
-    public boolean isBustBlackjack() {
-        return bustBlackjack;
-    }
-
-    public void setBustBlackjack(boolean bustBlackjack) {
-        this.bustBlackjack = bustBlackjack;
-    }
-
-    public boolean isFoldPoker() {
-        return foldPoker;
-    }
-
-    public void setFoldPoker(boolean foldPoker) {
-        this.foldPoker = foldPoker;
-    }
-
-    public boolean isMatchingHighestBetPoker() {
-        return matchingHighestBetPoker;
-    }
-
-    public void setMatchingHighestBetPoker(boolean matchingHighestBetPoker) {
-        this.matchingHighestBetPoker = matchingHighestBetPoker;
     }
 }

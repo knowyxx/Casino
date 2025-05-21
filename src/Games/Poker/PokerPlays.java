@@ -8,18 +8,18 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class PokerPlays {
-    private Scanner sc = new Scanner(System.in);
-    private Random rand = new Random();
-    private Cards cards = new Cards();
+    private final Scanner sc = new Scanner(System.in);
+    private final Random rand = new Random();
+    private final Cards cards = new Cards();
     private int throwaway = 0;
     private int bet = 0;
     private boolean correct;
-    private User user;
+    private boolean userSetFold = false;
 
 
 
     public void userBet(User user, int bet){
-        System.out.printf("How much would you like to bet? ");
+        System.out.println("How much would you like to bet? ");
         while(!correct){
             try {
                 throwaway = sc.nextInt();
@@ -45,13 +45,13 @@ public class PokerPlays {
                 bet = bet + throwaway;
                 user.winnings(-throwaway);
             }else {
-                userFold(user);
+                userFold();
             }
         }
     }
 
-    public void userFold(User user){
-        user.setFoldPoker(true);
+    public void userFold(){
+        userSetFold = true;
     }
 
 

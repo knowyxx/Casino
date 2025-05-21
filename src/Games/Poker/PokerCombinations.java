@@ -71,10 +71,10 @@ public class PokerCombinations {
         values.add(throwaway);
         throwaway = 0;
 
-        for (int i = 0; i < bots.size(); i++) {
-            for (int j = 0; j < bots.get(i).getCards().size(); j++) {
-                if (throwaway > bots.get(i).getCards().get(j).getValue_in_poker()){
-                    throwaway = bots.get(i).getCards().get(j).getValue_in_poker();
+        for (Bot bot : bots) {
+            for (int j = 0; j < bot.getCards().size(); j++) {
+                if (throwaway > bot.getCards().get(j).getValue_in_poker()) {
+                    throwaway = bot.getCards().get(j).getValue_in_poker();
                 }
             }
             values.add(throwaway);
