@@ -1,12 +1,17 @@
 package Cards;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Class for the cards.
+ */
 public class Cards {
+    /**
+     * Variables for the class.
+     */
     private String face;
     private String suit;
     private String color;
@@ -14,6 +19,10 @@ public class Cards {
     private int value_in_blackjack;
     private ArrayList<Cards> cards = new ArrayList<>();
 
+
+    /**
+     * Constructors for the class.
+     */
     public Cards(String face, String suit, String color, int value_in_poker, int value_in_blackjack) {
         this.face = face;
         this.suit = suit;
@@ -22,19 +31,14 @@ public class Cards {
         this.value_in_blackjack = value_in_blackjack;
     }
 
-    public Cards(String face, String suit, String color, int value_in_poker, int value_in_blackjack, ArrayList<Cards> cards) {
-        this.face = face;
-        this.suit = suit;
-        this.color = color;
-        this.value_in_poker = value_in_poker;
-        this.value_in_blackjack = value_in_blackjack;
-        this.cards = cards;
-    }
-
     public Cards() {
     }
 
-    public void loadCards() throws FileNotFoundException {
+
+    /**
+     * Method to load cards from the Cards.csv file into an ArrayList.
+     */
+    public void loadCards() {
         try (BufferedReader br = new BufferedReader(new FileReader("Cards.csv"))) {
             String line;
             br.readLine();
@@ -54,55 +58,28 @@ public class Cards {
         }
     }
 
-    public void shuffleCards(){
 
-    }
-
+    /**
+     * Setters and getters.
+     */
     public String getFace() {
         return face;
-    }
-
-    public void setFace(String face) {
-        this.face = face;
     }
 
     public String getSuit() {
         return suit;
     }
 
-    public void setSuit(String suit) {
-        this.suit = suit;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public int getValue_in_poker() {
         return value_in_poker;
-    }
-
-    public void setValue_in_poker(int value_in_poker) {
-        this.value_in_poker = value_in_poker;
     }
 
     public int getValue_in_blackjack() {
         return value_in_blackjack;
     }
 
-    public void setValue_in_blackjack(int value_in_blackjack) {
-        this.value_in_blackjack = value_in_blackjack;
-    }
-
     public ArrayList<Cards> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<Cards> cards) {
-        this.cards = cards;
-    }
 }

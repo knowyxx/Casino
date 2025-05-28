@@ -4,30 +4,32 @@ import Cards.Cards;
 
 import java.util.ArrayList;
 
+/**
+ * Class for bots.
+ */
 public class Bot {
     private ArrayList<Cards> cards;
     private boolean stayBlackjack;
     private boolean bustBlackjack;
+    private boolean isCounted;
     private boolean foldPoker;
     private boolean matchingHighestBetPoker;
     private int bet = 0;
     private int combinationValuePoker = 0;
 
 
+    /**
+     * Constructor for class.
+     */
     public Bot() {
+        cards = new ArrayList<Cards>();
     }
 
-    public Bot(ArrayList<Cards> cards, boolean stayBlackjack) {
-        this.cards = cards;
-        this.stayBlackjack = stayBlackjack;
-    }
-
+    /**
+     * Setters and getters.
+     */
     public ArrayList<Cards> getCards() {
         return cards;
-    }
-
-    public void setCards(ArrayList<Cards> cards) {
-        this.cards = cards;
     }
 
     public boolean isStayBlackjack() {
@@ -40,10 +42,6 @@ public class Bot {
 
     public boolean isBustBlackjack() {
         return bustBlackjack;
-    }
-
-    public void setBustBlackjack(boolean bustBlackjack) {
-        this.bustBlackjack = bustBlackjack;
     }
 
     public boolean isMatchingHighestBetPoker() {
@@ -76,5 +74,13 @@ public class Bot {
 
     public void setCombinationValuePoker(int combinationValuePoker) {
         this.combinationValuePoker = combinationValuePoker;
+    }
+
+    public boolean isCounted() {
+        return isCounted;
+    }
+
+    public void setCounted(boolean counted) {
+        isCounted = counted;
     }
 }

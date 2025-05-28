@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Class for slots.
+ */
 public class Slots {
 
     private boolean endOfGame;
@@ -14,7 +17,13 @@ public class Slots {
     private final ArrayList<String> symbol = new ArrayList<>();
     private final ArrayList<String> slot = new ArrayList<>();
 
+    /**
+     * Main method for slot game.
+     */
     public void slotsGame(User user){
+        /*
+            Loading symbols and welcoming the user.
+         */
         loadSymbol();
         System.out.println("""
                 Welcome to the game of slots!
@@ -33,6 +42,9 @@ public class Slots {
         }
 
 
+        /*
+            User can spam spinning until he wants to exit or doesn't have any money.
+         */
         while (!endOfGame) {
             System.out.println("""
                     would you like to spin or end?
@@ -74,6 +86,9 @@ public class Slots {
         }
     }
 
+    /**
+     * Clears and loads symbols into ArrayList.
+     */
     private void loadSymbol(){
         symbol.clear();
         symbol.add("\uD83C\uDF49");

@@ -1,10 +1,14 @@
 package Bar;
 
-import Players.User;
-
 import java.util.ArrayList;
 
+/**
+ * Class for the bar.
+ */
 public class Bar {
+    /**
+     * Variables for the bar, bartenders' name is an Easter egg.
+     */
     private String bartender="Hubert";
     private String name;
     private int price;
@@ -12,6 +16,9 @@ public class Bar {
     private int luck;
     private ArrayList<Bar> drinks;
 
+    /**
+     * Constructors for the class.
+     */
     public Bar(String name, int price, Drinks drink, int luck) {
         this.name = name;
         this.price = price;
@@ -22,15 +29,10 @@ public class Bar {
     public Bar() {
     }
 
-    public void giveUserDrink(User user, Drinks drink) {
-        for (Bar bar : drinks) {
-            if (bar.getDrink() == drink) {
-                user.setDrinks(drink);
-                user.drinkDrink(bar.getLuck());
-            }
-        }
-    }
 
+    /**
+     * Method to load the drinks into an ArrayList, where we use it further.
+     */
     public void loadDrinks(){
         drinks = new ArrayList<Bar>();
         drinks.add(new Bar("Negroni",1000, Drinks.NEGRONI, 8));
@@ -47,40 +49,20 @@ public class Bar {
         drinks.add(new Bar("Beer And Car Keys", 500, Drinks.BEERANDCARKEYS, 10));
     }
 
-    public String getBartender() {
-        return bartender;
-    }
 
+    /**
+     * Setters and getters.
+     */
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Drinks getDrink() {
-        return drink;
-    }
-
-    public void setDrink(Drinks drink) {
-        this.drink = drink;
     }
 
     public int getLuck() {
         return luck;
     }
 
-    public void setLuck(int luck) {
-        this.luck = luck;
-    }
-
     public ArrayList<Bar> getDrinks() {
         return drinks;
-    }
-
-    public void setDrinks(ArrayList<Bar> drinks) {
-        this.drinks = drinks;
     }
 
     public String getName() {

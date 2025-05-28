@@ -2,6 +2,9 @@ package Commands;
 
 import Players.User;
 
+/**
+ * Command for exiting the game.
+ */
 public class Exit implements Commands {
 
     @Override

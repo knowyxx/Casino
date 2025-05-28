@@ -2,6 +2,9 @@ package Commands;
 
 import Players.User;
 
+/**
+ * Command to write out all the commands.
+ */
 public class Help implements Commands{
     @Override
     public void setUser(User setUser) {

@@ -6,9 +6,15 @@ import Players.User;
 
 import java.util.*;
 
+/**
+ * Class for checking combinations in poker.
+ * Everything written here is by ChatGPT.
+ */
 public class PokerCombinations {
 
-
+    /**
+     * The Main method for checking is a deck has a combination and returns the power of the combination.
+     */
     public int checkCombination(ArrayList<Cards> hand){
 
 
@@ -58,6 +64,9 @@ public class PokerCombinations {
         return 1;
     }
 
+    /**
+     * Checks if who has the highest card.
+     */
     public int checkIfHighestCard(User user, ArrayList<Bot> bots){
         ArrayList<Integer> values = new ArrayList<>();
         int throwaway = 0;
@@ -92,8 +101,11 @@ public class PokerCombinations {
     }
 
 
+    /*
+        Checks if the cards are sequential in a deck.
+     */
     public boolean sequential (ArrayList<Integer> values){
-        Set<Integer> unique = new HashSet<Integer>();
+        Set<Integer> unique = new HashSet<>();
         if (unique.size() != values.size()){
             return false;
         }
@@ -115,9 +127,12 @@ public class PokerCombinations {
         return unique.containsAll(Arrays.asList(14,2,3,4,5));
     }
 
+    /*
+        Methods to check combinations.
+     */
     public boolean hasOfAKind(Map<Integer, Integer> valueCount, int target){
-        for (int couunt : valueCount.values()){
-            if (couunt == target){
+        for (int count : valueCount.values()){
+            if (count == target){
                 return true;
             }
         }

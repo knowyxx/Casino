@@ -1,20 +1,23 @@
 package Players;
 
-import Bar.Drinks;
 import Cards.Cards;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ *  Class for the user.
+ */
 public class User {
-    private int money = 200;
+    private int money = 300;
     private double luck = 1;
-    private Drinks drinks;
-    //private String age = "18";
     private String age;
     private ArrayList<Cards> cards;
 
 
+    /**
+     * Load the user practically a constructor but modified to ask how old the user is before entering the casino.
+     */
     public void loadUser(){
         Scanner sc = new Scanner(System.in);
         cards = new ArrayList<Cards>();
@@ -35,47 +38,32 @@ public class User {
         }
     }
 
-    public void drinkDrink(int drinkLuck){
-        if (drinks != null){
-            setLuck(1 + drinkLuck);
-        }
+    /**
+     * Setters and getters.
+     */
+    public void addLuck(int luck){
+        this.luck += luck;
     }
 
     public void winnings(double bet){
-        double throwaway = 0;
-        throwaway = money + bet;
-        money = (int) Math.round(throwaway);
+        money = Math.toIntExact(Math.round(bet));
     }
 
     public int getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
     public double getLuck() {
         return luck;
-    }
-
-    public void setLuck(double luck) {
-        this.luck = luck;
-    }
-
-    public Drinks getDrinks() {
-
-        return drinks;
-    }
-
-    public void setDrinks(Drinks drinks) {
-        this.drinks = drinks;
     }
 
     public String getAge() {
         return age;
     }
 
+    /**
+     * Regex used for setting users age to not have triple digits.
+     */
     public void setAge(String age) {
         if (age.matches("\\d{1,2}")){
             this.age = age;

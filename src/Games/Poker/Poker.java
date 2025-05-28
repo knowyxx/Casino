@@ -4,204 +4,240 @@ import Cards.Cards;
 import Players.Bot;
 import Players.User;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Class for the poker game.
+ */
 public class Poker {
 
     private final Cards cards = new Cards();
     private final Random rand = new Random();
     private boolean endOfGame = false;
-    private boolean correct = false;
     private final ArrayList<Bot> bots = new ArrayList<>();
-    private int throwawayInt = 0;
-    private int throwaway2Int = 0;
     private final Scanner sc = new Scanner(System.in);
-    private int totalCall = 0;
-    private int bet = 25;
-    private int amountCall = 0;
     private final PokerPlays pokerPlays = new PokerPlays();
-    private boolean betSeetled = false;
     private final ArrayList<Cards> pokerHand = new ArrayList<>();
     private final PokerCombinations pokerCombinations = new PokerCombinations();
+    private int bet = 25;
+    private int userBet = 0;
     private boolean userMatchingHighestBetPoker;
     private boolean userFoldPoker;
+    private boolean betSettled = false;
 
-
-
-
-    public void pokerGame(User user, int numberOfBots){
+    /**
+     * Main method for starting poker.
+     */
+    public void pokerGame(User user, int numberOfBots) throws FileNotFoundException {
+        /*
+            Resetting some variables.
+         */
+        System.out.println("Welcome to poker!");
+        cards.loadCards();
         user.winnings(-bet);
         userFoldPoker = false;
+        userBet = bet;
+        endOfGame = false;
 
+        /*
+            Giving the user and bots cards into their deck.
+         */
         for (int i = 0; i < 2; i++) {
             userDrawCards(user);
         }
 
         for (int i = 0; i < numberOfBots; i++) {
-            bots.add(new Bot());
+            Bot bot = new Bot();
             for (int j = 0; j < 2; j++) {
-                bots.get(i).getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
+                bot.getCards().add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
             }
+            bots.add(bot);
         }
 
+        /*
+            Repeating functions in a loop that ends if everybody folded or the game ended.
+         */
         while (!endOfGame) {
-            while (!betSeetled) {
+            betSettled = false;
+            while (!betSettled) {
                 bettingRound(user);
             }
 
-            if (checkIfEverybodyFolded(user)){// 3 cards
+            if (checkIfEverybodyFolded()) {
                 for (int i = 0; i < 3; i++) {
                     pokerHand.add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
                 }
-                System.out.print("Poker hand: ");
+                System.out.print("Community cards: ");
                 writeDeck(pokerHand);
-                System.out.println(" ");
 
-                while (!betSeetled) {
+                betSettled = false;
+                while (!betSettled) {
                     bettingRound(user);
                 }
-                if (checkIfEverybodyFolded(user)){ // 4 cards
-                    pokerHand.add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
-                    System.out.print("Poker hand: ");
-                    writeDeck(pokerHand);
-                    System.out.println(" ");
 
-                    while (!betSeetled) {
+                if (checkIfEverybodyFolded()) {
+                    pokerHand.add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
+                    System.out.print("Community cards: ");
+                    writeDeck(pokerHand);
+
+                    betSettled = false;
+                    while (!betSettled) {
                         bettingRound(user);
                     }
-                    if (checkIfEverybodyFolded(user)){// 5 cards
-                        pokerHand.add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
-                        System.out.print("Poker hand: ");
-                        writeDeck(pokerHand);
-                        System.out.println(" ");
 
-                        while (!betSeetled) {
+                    if (checkIfEverybodyFolded()) {
+                        pokerHand.add(cards.getCards().get(rand.nextInt(cards.getCards().size())));
+                        System.out.print("Community cards: ");
+                        writeDeck(pokerHand);
+
+                        betSettled = false;
+                        while (!betSettled) {
                             bettingRound(user);
                         }
 
                         winOrLose(user);
-
-                    }else {
+                    } else {
                         winOrLose(user);
                     }
-                }else {
+                } else {
                     winOrLose(user);
                 }
-            }else {
+            } else {
                 winOrLose(user);
             }
         }
     }
 
-    public void userDrawCards(User user){
-        if (user.getLuck() == 0) {
-            int luck = rand.nextInt(100) + 1;
-            if (luck <= user.getLuck()) {
-                user.getCards().add(cards.getCards().get(rand.nextInt(20)));
-            } else {
-                user.getCards().add(cards.getCards().get(rand.nextInt(52)));
-            }
+    /**
+     * Give the user a card based on luck.
+     */
+    public void userDrawCards(User user) {
+        int luck = rand.nextInt(100) + 1;
+        if (luck <= user.getLuck()) {
+            user.getCards().add(cards.getCards().get(rand.nextInt(20)));
+        } else {
+            user.getCards().add(cards.getCards().get(rand.nextInt(52)));
         }
     }
 
-    public void winOrLose(User user){
+    /**
+     * To check who won.
+     */
+    public void winOrLose(User user) {
         int userCombinationValuePoker = pokerCombinations.checkCombination(user.getCards());
         for (Bot bot : bots) {
             bot.setCombinationValuePoker(pokerCombinations.checkCombination(bot.getCards()));
         }
 
-        throwawayInt = 0;
-        int ID = 0;
+        int lowestBotCombo = 10000000;
+        int winningBotId = -1;
         for (int i = 0; i < bots.size(); i++) {
-            if (throwawayInt > bots.get(i).getCombinationValuePoker()){
-                throwawayInt = bots.get(i).getCombinationValuePoker();
-                ID = i;
+            int combo = bots.get(i).getCombinationValuePoker();
+            if (combo < lowestBotCombo) {
+                lowestBotCombo = combo;
+                winningBotId = i;
             }
         }
 
-        if (userCombinationValuePoker != 0 && throwawayInt != 0) {
-            if (userCombinationValuePoker < throwawayInt) {
-                System.out.println("Bot " + ID + " won!");
-            }else {
-                System.out.println("You " + ID + " won!");
+        if (userCombinationValuePoker != 0 && lowestBotCombo != 0) {
+            if (userCombinationValuePoker < lowestBotCombo) {
+                System.out.println("You won!");
+            } else {
+                System.out.println("Bot " + winningBotId + " won!");
             }
-        }else {
-            if (highestCardCombination(user) != 0){
-                System.out.println("Bot " + ID + " won!");
-            }else {
-                System.out.println("You " + ID + " won!");
+        } else {
+            if (highestCardCombination(user) == 0) {
+                System.out.println("You won!");
+            } else {
+                System.out.println("Bot " + winningBotId + " won!");
             }
         }
+
+        /*
+            Show all final hands
+         */
+        System.out.println("\n--- Final Cards ---");
+        System.out.println("Your cards:");
+        writeDeck(user.getCards());
+
+        System.out.println("\nCommunity cards:");
+        writeDeck(pokerHand);
+
+        for (int i = 0; i < bots.size(); i++) {
+            System.out.println("\nBot " + i + " cards:");
+            writeDeck(bots.get(i).getCards());
+        }
+
         endOfGame = true;
     }
 
-    public int highestCardCombination(User user){
-        throwawayInt = 0;
-        throwaway2Int = 0;
-        int ID = 0;
+    /**
+     * To check, who has the highest card if no one has a combination.
+     */
+    public int highestCardCombination(User user) {
+        int highestBot = 0;
+        int ID = -1;
         for (int i = 0; i < bots.size(); i++) {
-            if (pokerCombinations.checkCombination(bots.get(i).getCards()) < throwawayInt &&
-                    pokerCombinations.checkCombination(bots.get(i).getCards()) != 1){
-                throwawayInt = pokerCombinations.checkCombination(bots.get(i).getCards());
+            int combo = pokerCombinations.checkCombination(bots.get(i).getCards());
+            if (combo > highestBot) {
+                highestBot = combo;
                 ID = i;
             }
-
-        }
-        if (pokerCombinations.checkCombination(user.getCards()) != 1){
-            throwaway2Int = pokerCombinations.checkCombination(user.getCards());
-
-        }
-        if (throwawayInt<throwaway2Int){
-            return 0;
-        }else {
-            return ID;
         }
 
+        int userCombo = pokerCombinations.checkCombination(user.getCards());
+        return (userCombo > highestBot) ? ID : 0;
     }
 
-    public void writeDeck(ArrayList<Cards> cards){
+    /*
+        Write deck.
+     */
+    public void writeDeck(ArrayList<Cards> cards) {
         for (Cards card : cards) {
-            System.out.println("(" + card.getFace() + " "
-                    + card.getSuit() + " "
-                    + card.getValue_in_blackjack() + ") ");
+            System.out.print("(" + card.getFace() + " " + card.getSuit() + ") ");
         }
-        System.out.println(" ");
+        System.out.println();
     }
 
-    public boolean checkIfIsTheHighestBet(){
-        throwawayInt = 0;
-        betSeetled = false;
-
-        for (int i = 0; i < bots.size() + 1; i++) {
-            if (throwawayInt > bots.get(i).getBet()) {
-                bots.get(i).setMatchingHighestBetPoker(true);
-                throwawayInt = bots.get(i).getBet();
-                throwaway2Int++;
-            }else {
-                bots.get(i).setMatchingHighestBetPoker(false);
-            }
-            if (throwawayInt > bet){
-                userMatchingHighestBetPoker = true;
-                throwawayInt = bet;
-                throwaway2Int++;
-            }else {
-                userMatchingHighestBetPoker = false;
-            }
-            if (throwaway2Int == bots.size()+1){
-                betSeetled = true;
-                return true;
+    /*
+        Checks if the user or bot have the highest bet.
+     */
+    public boolean checkIfIsTheHighestBet() {
+        int highest = bet;
+        for (Bot bot : bots) {
+            if (!bot.isFoldPoker()) {
+                highest = Math.max(highest, bot.getBet());
             }
         }
-        return false;
 
+        if (!userFoldPoker && userBet < highest) {
+            userMatchingHighestBetPoker = false;
+            return false;
+        }
+
+        for (Bot bot : bots) {
+            if (!bot.isFoldPoker() && bot.getBet() < highest) {
+                bot.setMatchingHighestBetPoker(false);
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public void bettingRound(User user){
-        while (checkIfIsTheHighestBet()) {
-            System.out.println("Your cards: ");
+    /*
+        The betting round of poker for the user and bots.
+     */
+    public void bettingRound(User user) {
+        while (!checkIfIsTheHighestBet()) {
+            System.out.println("Your cards:");
             writeDeck(user.getCards());
+
+            System.out.println("Your current bet: " + userBet);
+            System.out.println("Total pot (approximate): " + calculateTotalPot());
 
             if (!userFoldPoker) {
                 System.out.println("""
@@ -210,61 +246,74 @@ public class Poker {
                         2) call
                         3) bet
                         """);
-                while (!correct) {
-                    int choice = 0;
-                    try {
-                        choice = sc.nextInt();
 
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    int highestBet = 0;
+                boolean correct = false;
+                while (!correct) {
+                    int choice = sc.nextInt();
+                    int highestBet = bet;
+
                     switch (choice) {
-                        case 1: // FOLD
+                        case 1:
                             pokerPlays.userFold();
+                            userFoldPoker = true;
                             correct = true;
-                        case 2: // CALL
+                            break;
+                        case 2:
                             pokerPlays.userCall(user, bet, userMatchingHighestBetPoker, highestBet);
+                            userBet = highestBet;
                             correct = true;
-                        case 3: // BET
+                            break;
+                        case 3:
+                            bet += 25;
+                            userBet = bet;
                             pokerPlays.userBet(user, bet);
                             correct = true;
-
+                            break;
                         default:
                             System.out.println("Invalid choice");
-
                     }
                 }
             }
-            correct = false;
 
-            throwawayInt = 0;
+
             for (Bot bot : bots) {
-                throwawayInt = rand.nextInt(100);
-                if (10 > throwawayInt) {
-                    pokerPlays.botFold(bot);
-                    bots.remove(bot);
-                }
-                if (10 < throwawayInt && throwawayInt > 90) {
-                    pokerPlays.botCall(bot, bot.isMatchingHighestBetPoker(), bot.getBet());
-                }
-                if (throwawayInt < 90) {
-                    pokerPlays.botBet(bot, bot.getBet());
+                if (bot.isFoldPoker()) {
+                    int roll = rand.nextInt(100);
+                    if (roll < 10) {
+                        pokerPlays.botFold(bot);
+                        bots.remove(bot);
+                    } else if (roll > 90) {
+                        pokerPlays.botCall(bot, bot.isMatchingHighestBetPoker(), bot.getBet());
+                    } else {
+                        bet += 25;
+                        pokerPlays.botBet(bot, bet);
+                    }
                 }
             }
         }
+
+        betSettled = true;
     }
 
-    public boolean checkIfEverybodyFolded(User user){
-        throwawayInt = 0;
-        for (int i = 0; i < bots.size() + 1; i++) {
-            if (bots.get(i).isFoldPoker()){
-                throwawayInt++;
-            }
-            if (userFoldPoker){
-                throwawayInt++;
-            }
+    /**
+     * Checks if everybody has folded.
+     */
+    public boolean checkIfEverybodyFolded() {
+        int foldCount = userFoldPoker ? 1 : 0;
+        for (Bot bot : bots) {
+            if (bot.isFoldPoker()) foldCount++;
         }
-        return throwawayInt != bots.size() + 1;
+        return foldCount < bots.size() + 1;
+    }
+
+    /**
+     * Calculates the amount of money in the pot.
+     */
+    private int calculateTotalPot() {
+        int total = userBet;
+        for (Bot bot : bots) {
+            if (!bot.isFoldPoker()) total += bot.getBet();
+        }
+        return total;
     }
 }
