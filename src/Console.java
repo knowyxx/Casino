@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Console {
     private HashMap<String, Commands> commandsHashMap = new HashMap<>();
-    private final User user = new User();
+    public User user = new User();
     private String command = "";
     private final Scanner sc = new Scanner(System.in);
     private boolean exit = false;
@@ -95,4 +95,15 @@ public class Console {
         }
     }
 
+    /**
+     * Setter and getter for user.
+     * @param user
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

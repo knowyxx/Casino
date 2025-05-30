@@ -21,21 +21,28 @@ public class User {
     public void loadUser(){
         Scanner sc = new Scanner(System.in);
         cards = new ArrayList<Cards>();
-        System.out.println("How old are you?");
-        boolean correct = false;
-        while(!correct){
-            try {
-                setAge(sc.next());
-                if (Integer.parseInt(age) < 100 && Integer.parseInt(age) > 0){
-                    correct = true;
+        if (age == null){
+            System.out.println("How old are you?");
+            boolean correct = false;
+            while(!correct){
+                try {
+                    setAge(sc.next());
+                    if (Integer.parseInt(age) < 100 && Integer.parseInt(age) > 0){
+                        correct = true;
 
-                }else {
+                    }else {
+                        System.out.println("Invalid age.");
+                    }
+                } catch (Exception e) {
                     System.out.println("Invalid age.");
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid age.");
             }
         }
+
+    }
+
+    public void loadCards(){
+        cards = new ArrayList<Cards>();
     }
 
     /**
@@ -46,7 +53,7 @@ public class User {
     }
 
     public void winnings(double bet){
-        money = Math.toIntExact(Math.round(bet));
+        money += Math.toIntExact(Math.round(bet));
     }
 
     public int getMoney() {

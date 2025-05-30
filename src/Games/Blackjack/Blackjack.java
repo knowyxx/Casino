@@ -271,7 +271,7 @@ public class Blackjack {
     /**
      * Write out the cards in the deck.
      */
-    private void writeDeck(ArrayList<Cards> cards){
+    public void writeDeck(ArrayList<Cards> cards){
         for (Cards card : cards) {
             System.out.println("(" + card.getFace() + " "
                     + card.getSuit() + " "

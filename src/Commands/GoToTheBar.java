@@ -58,8 +58,9 @@ public class GoToTheBar implements Commands{
             }
             if (answer - 2 <= bar.getDrinks().size()){
                 if (user.getMoney() >= bar.getDrinks().get(answer - 2).getPrice()){
-                    user.winnings(-bar.getDrinks().get(answer - 2).getPrice());
-                    user.addLuck(bar.getDrinks().get(answer - 2).getLuck());
+                    drinkDrink(answer - 2);
+//                    user.winnings(-bar.getDrinks().get(answer - 2).getPrice());
+//                    user.addLuck(bar.getDrinks().get(answer - 2).getLuck());
                     return "Wow you just drank " + bar.getDrinks().get(answer - 2).getName() + " and you feel kinda lucky all of the sudden.";
                 }else {
                     System.out.println("You don't have enough money to buy this drink.");
@@ -71,4 +72,11 @@ public class GoToTheBar implements Commands{
 
         return "chybka GoToTheBar";
     }
+
+    public void drinkDrink(int drink){
+        bar.loadDrinks();
+        user.winnings(-bar.getDrinks().get(drink).getPrice());
+        user.addLuck(bar.getDrinks().get(drink).getLuck());
+    }
+
 }

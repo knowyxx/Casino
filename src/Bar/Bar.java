@@ -37,7 +37,7 @@ public class Bar {
         drinks = new ArrayList<Bar>();
         drinks.add(new Bar("Negroni",1000, Drinks.NEGRONI, 8));
         drinks.add(new Bar("Spritz", 700, Drinks.SPRITZ, 4));
-        drinks.add(new Bar("Redbull Vodka" ,100, Drinks.REDBULLVODKA, 1));
+        drinks.add(new Bar("Red bull Vodka" ,100, Drinks.REDBULLVODKA, 1));
         drinks.add(new Bar("Long Island Iced Tea", 1500, Drinks.LONGISLANDICEDTEA, 10));
         drinks.add(new Bar("Sex On The Beach", 300, Drinks.SEXONTHEBEACH, 2));
         drinks.add(new Bar("Old Fashioned", 250, Drinks.OLDFASHIONED, 2));

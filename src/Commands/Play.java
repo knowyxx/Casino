@@ -139,4 +139,8 @@ public class Play implements Commands {
         }
         correct = false;
     }
+
+    public void setAnswer(int answer) {
+        this.answer = answer;
+    }
 }

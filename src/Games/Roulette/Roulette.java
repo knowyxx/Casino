@@ -17,7 +17,7 @@ public class Roulette {
     private String color;
     private String parity;
     private String range;
-    private ArrayList<Roulette> rouletteArrayList = new ArrayList<>();
+    private final ArrayList<Roulette> rouletteArrayList = new ArrayList<>();
     private int answerInt = 0;
 
     /**
@@ -246,4 +246,7 @@ public class Roulette {
 
     public String getRange() { return range; }
 
+    public ArrayList<Roulette> getRouletteArrayList() {
+        return rouletteArrayList;
+    }
 }
