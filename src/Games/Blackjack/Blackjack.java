@@ -104,11 +104,11 @@ public class Blackjack {
              */
             for (int i = 0; i < bots.size(); i++) {
                 botBlackjackGame(bots.get(i));
-                System.out.println("Bot" + i+1 + " cards: ");
+                System.out.println("Bot" + (i+1) + " cards: ");
                 writeDeck(bots.get(i).getCards());
 
                 if (checkIfBotBusted(bots.get(i))){
-                    System.out.println("Bot" + i+1 + " busted!");
+                    System.out.println("Bot" + (i+1) + " busted!");
                     totalBust++;
                 }
                 if (bots.get(i).isStayBlackjack() && !bots.get(i).isCounted()){
