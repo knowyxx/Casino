@@ -182,7 +182,7 @@ public class Blackjack {
         int totalValueUser = 0;
 
         /*
-            To check if the dealers first 2 cards value is already above 17.
+            Counting the value of the dealers and users deck.
          */
         for (int i = 0; i < dealer.getCards().size(); i++) {
             totalValueDealer = totalValueDealer + dealer.getCards().get(i).getValue_in_blackjack();

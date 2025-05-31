@@ -63,7 +63,7 @@ public class Poker {
         while (!endOfGame) {
             betSettled = false;
             while (!betSettled) {
-                bettingRound(user);
+                bettingRound(user, false);
             }
 
             if (checkIfEverybodyFolded()) {
@@ -75,7 +75,7 @@ public class Poker {
 
                 betSettled = false;
                 while (!betSettled) {
-                    bettingRound(user);
+                    bettingRound(user, false);
                 }
 
                 if (checkIfEverybodyFolded()) {
@@ -85,7 +85,7 @@ public class Poker {
 
                     betSettled = false;
                     while (!betSettled) {
-                        bettingRound(user);
+                        bettingRound(user, false);
                     }
 
                     if (checkIfEverybodyFolded()) {
@@ -95,7 +95,7 @@ public class Poker {
 
                         betSettled = false;
                         while (!betSettled) {
-                            bettingRound(user);
+                            bettingRound(user, false);
                         }
 
                         winOrLose(user);
@@ -231,8 +231,8 @@ public class Poker {
     /*
         The betting round of poker for the user and bots.
      */
-    public void bettingRound(User user) {
-        while (!checkIfIsTheHighestBet()) {
+    public void bettingRound(User user, boolean endOfNewRound) {
+        while (!checkIfIsTheHighestBet() || !endOfNewRound) {
             System.out.println("Your cards:");
             writeDeck(user.getCards());
 
@@ -291,7 +291,6 @@ public class Poker {
                 }
             }
         }
-
         betSettled = true;
     }
 
